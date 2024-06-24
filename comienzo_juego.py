@@ -123,6 +123,14 @@ def main():
     sys.exit()
 
 def parse_csv(nombre_archivo: str):
+    """Esta funcion convierte el contenido del archivo csv a una lista con diccionarios
+
+    Args:
+        nombre_archivo (str): recibe como argumento el path o ruta del archivo csv
+
+    Returns:
+        lista_preguntas(list[dict]): retorna una lista con diccionarios con el contenido del csv 
+    """
     lista_preguntas = []
     if os.path.exists(nombre_archivo):
         with open(nombre_archivo, "r", encoding="utf-8") as archivo:
@@ -157,7 +165,15 @@ def blit_text(surface, text, pos, font, color=pygame.Color('black')):
         y += word_height
 
 def guardar_puntajes(nombre, puntos):
-    fecha_hoy = datetime.now().strftime("%Y-%m-%d")
+    """Esta funcion se encarga de guardar los puntajes del juego , guardando los datos en un diccionario, el nombre, los puntos y la fecha en la que se jugo
+    verifica si el json existe y si es asi agrega el diccionario con el nombre y los puntos recibidos por argumento a la lista para ser guardados en el json
+    y ser ordenados con el metodo sorted
+
+    Args:
+        nombre (str): nombre que se recibe de la funcion pedir_nombre para ser guardado en el diccionario que es guardado en la variable entrada 
+        puntos (int|str): puntos recolectados de la funcion inicio_juego son los puntos que realizo el jugador, cada pregunta correcta vale 50 puntos
+    """
+    fecha_hoy = datetime.now().strftime("%d-%m-%Y")
     entrada = {"nombre": nombre, "puntos": puntos, "fecha": fecha_hoy}
     
     if os.path.exists("puntajes.json"):
@@ -173,6 +189,16 @@ def guardar_puntajes(nombre, puntos):
         json.dump(puntajes, archivo, ensure_ascii=False, indent=4)
 
 def pedir_nombre(pantalla, fuente):
+    """Esta funcion solicita el nombre del jugador en pantalla para ser ingresado por teclado y con enter ser enviado
+    retornando el nombre del jugador
+
+    Args:
+        pantalla (class): Recibe como argumento la pantalla de pygame.display donde va ser bliteador para que se vea el texto ingresado 
+        fuente (class): recibe pygame.font.Sysfont es la fuente del texto que va a tener 
+
+    Returns:
+        nombre(str): la funcion retornar el nombre que se ingreso
+    """
     nombre = ""
     pedir_nombre = True
 
@@ -197,6 +223,12 @@ def pedir_nombre(pantalla, fuente):
     return nombre
 
 def mostrar_puntajes(pantalla, fuente):
+    """Esta funcion muestra los puntajes en pantalla
+
+    Args:
+        pantalla (class): pantalla donde se va a mostrar los puntajes
+        fuente (class): fuente de pygame con la que se van a mostrar los puntajes
+    """
     if os.path.exists("puntajes.json"):
         with open("puntajes.json", "r", encoding="utf-8") as archivo:
             puntajes = json.load(archivo)
@@ -208,15 +240,18 @@ def mostrar_puntajes(pantalla, fuente):
     for puntaje in puntajes:
         texto = f"{puntaje['nombre']}: {puntaje['puntos']} puntos (Fecha: {puntaje['fecha']})"
         superficie_texto = fuente.render(texto, True, BLANCO)
-        pantalla.blit(superficie_texto, (50, y_offset))
+        pantalla.blit(superficie_texto, (10, y_offset))
         y_offset += 50
         if y_offset > 900:
             break
     pygame.display.flip()
-    pygame.time.wait(10000)  # Esperar 10 segundos antes de regresar al menú principal
+    pygame.time.wait(8000)  # Esperar 8 segundos antes de regresar al menú principal
     main()
 
 def inicio_juego():
+    """Esta funcion da inicio al juego bliteando las imagenes con los botones y toda la logica para el juego, 
+    una vez finalizado el juego y guardado y mostrado los 10 mejores puntos vuelve al menu principal
+    """
     lista_preguntas = parse_csv('preguntas.csv')
     if not lista_preguntas:
         return
@@ -238,6 +273,7 @@ def inicio_juego():
     imagen_pregunta = pygame.image.load("pregunta.png")
     imagen_pregunta_tranformada = pygame.transform.scale(imagen_pregunta, (500, 300))
 
+    fuente_puntaje = pygame.font.SysFont("Arial",20)
     fuente = pygame.font.SysFont("Arial", 30)
     fuente_respuesta = pygame.font.SysFont("Arial", 20)
     fuente_segundero = pygame.font.SysFont("Arial", 40)
@@ -326,9 +362,9 @@ def inicio_juego():
 
         if intentos == 0 or pregunta_actual == len(lista_preguntas) - 1:
             sonido.stop()  # Detener la música
-            nombre = pedir_nombre(pantalla, fuente)
+            nombre = pedir_nombre(pantalla, fuente_puntaje)
             guardar_puntajes(nombre, puntos)
-            mostrar_puntajes(pantalla, fuente)
+            mostrar_puntajes(pantalla, fuente_puntaje)
             flag_run = False
 
     main()
