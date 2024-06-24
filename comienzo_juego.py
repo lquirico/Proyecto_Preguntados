@@ -47,10 +47,10 @@ margen_inferior = 50
 espacio_entre_opciones = 150
 
 # Cargar imágenes
-icono_iniciar = pygame.image.load('INICIAR.png')
-icono_top10 = pygame.image.load('TOP 10.png')
-icono_ajustes = pygame.image.load('AJUSTES.png')
-icono_salir = pygame.image.load('SALIR.png')
+icono_iniciar = pygame.image.load('iniciar.png')
+icono_top10 = pygame.image.load('top10.png')
+icono_ajustes = pygame.image.load('ajustes.png')
+icono_salir = pygame.image.load('salir.png')
 
 # Redimensionar imágenes a un tamaño mayor (300x100 píxeles)
 icono_iniciar = pygame.transform.scale(icono_iniciar, (300, 100))
