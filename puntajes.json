@@ -1,0 +1,37 @@
+[
+    {
+        "nombre": "adn",
+        "puntos": 550,
+        "fecha": "2024-06-24"
+    },
+    {
+        "nombre": "diego",
+        "puntos": 500,
+        "fecha": "2024-06-23"
+    },
+    {
+        "nombre": "Diego",
+        "puntos": 500,
+        "fecha": "2024-06-23"
+    },
+    {
+        "nombre": "Diego",
+        "puntos": 350,
+        "fecha": "2024-06-23"
+    },
+    {
+        "nombre": "Alejandro",
+        "puntos": -50,
+        "fecha": "2024-06-24"
+    },
+    {
+        "nombre": "ricardo",
+        "puntos": -150,
+        "fecha": "2024-06-24"
+    },
+    {
+        "nombre": "kiro",
+        "puntos": -150,
+        "fecha": "2024-06-24"
+    }
+]
