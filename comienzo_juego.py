@@ -262,6 +262,8 @@ def inicio_juego():
     pygame.display.set_icon(icono)
     pygame.mixer.init()
     
+    sonido_error = pygame.mixer.Sound("error_fallo.mp3")
+
     sonido = pygame.mixer.Sound("tic_tac.mp3")
 
     imagen_opcion_a = pygame.image.load("opcionA.jpeg")
@@ -310,7 +312,8 @@ def inicio_juego():
                     else:
                         puntos -= 50
                         intentos -= 1
-                        
+                        sonido_error.play()
+
                     pregunta_actual += 1
                     segundero = 30
                 elif button_B.collidepoint(evento.pos):
@@ -322,6 +325,7 @@ def inicio_juego():
                     else:
                         puntos -= 50
                         intentos -= 1
+                        sonido_error.play()
 
                     pregunta_actual += 1
                     segundero = 30
@@ -334,6 +338,7 @@ def inicio_juego():
                     else:
                         puntos -= 50
                         intentos -= 1
+                        sonido_error.play()
 
                     pregunta_actual += 1
                     segundero = 30
