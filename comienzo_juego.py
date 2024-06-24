@@ -44,7 +44,7 @@ indice_seleccionado = None  # None para indicar que ninguna opción está selecc
 # Margen superior e inferior
 margen_superior = 50
 margen_inferior = 50
-espacio_entre_opciones = 150
+espacio_entre_opciones = 130
 
 # Cargar imágenes
 icono_iniciar = pygame.image.load('iniciar.png')
@@ -304,34 +304,40 @@ def inicio_juego():
                 if button_A.collidepoint(evento.pos):
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "a":
                         puntos += 50
-                        segundero = 30
-                        pregunta_actual = (pregunta_actual + 1) % len(lista_preguntas)
                         sonido.stop()
                         sonido.play()
+                    
                     else:
                         puntos -= 50
                         intentos -= 1
+                        
+                    pregunta_actual += 1
+                    segundero = 30
                 elif button_B.collidepoint(evento.pos):
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "b":
                         puntos += 50
-                        segundero = 30
-                        pregunta_actual = (pregunta_actual + 1) % len(lista_preguntas)
                         sonido.stop()
                         sonido.play()
-                    else:
-                        puntos -= 50
-                        intentos -= 1
-                elif button_C.collidepoint(evento.pos):
-                    if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "c":
-                        puntos += 50
-                        segundero = 30
-                        pregunta_actual = (pregunta_actual + 1) % len(lista_preguntas)
-                        sonido.stop()
-                        sonido.play()
+                    
                     else:
                         puntos -= 50
                         intentos -= 1
 
+                    pregunta_actual += 1
+                    segundero = 30
+                elif button_C.collidepoint(evento.pos):
+                    if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "c":
+                        puntos += 50
+                        sonido.stop()
+                        sonido.play()
+                    
+                    else:
+                        puntos -= 50
+                        intentos -= 1
+
+                    pregunta_actual += 1
+                    segundero = 30
+                
         pantalla.fill(NEGRO)
         texto_segundero = fuente_segundero.render(str(segundero), False, BLANCO)
         texto_puntos = fuente.render(f"Puntos: {puntos}", False, BLANCO)
@@ -360,7 +366,8 @@ def inicio_juego():
 
         pygame.display.update()
 
-        if intentos == 0 or pregunta_actual == len(lista_preguntas) - 1:
+        if intentos == 0 or pregunta_actual >= len(lista_preguntas) :
+            pregunta_actual = 0
             sonido.stop()  # Detener la música
             nombre = pedir_nombre(pantalla, fuente_puntaje)
             guardar_puntajes(nombre, puntos)
