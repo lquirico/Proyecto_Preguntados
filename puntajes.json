@@ -1,0 +1,42 @@
+[
+    {
+        "nombre": "Lucia",
+        "puntos": 650,
+        "fecha": "25-06-2024"
+    },
+    {
+        "nombre": "Lucia",
+        "puntos": 600,
+        "fecha": "25-06-2024"
+    },
+    {
+        "nombre": "Lucia",
+        "puntos": 450,
+        "fecha": "24-06-2024"
+    },
+    {
+        "nombre": "Lucia",
+        "puntos": 100,
+        "fecha": "25-06-2024"
+    },
+    {
+        "nombre": "Diego",
+        "puntos": 50,
+        "fecha": "24-06-2024"
+    },
+    {
+        "nombre": "andres",
+        "puntos": -150,
+        "fecha": "24-06-2024"
+    },
+    {
+        "nombre": "ricardo",
+        "puntos": -150,
+        "fecha": "24-06-2024"
+    },
+    {
+        "nombre": "Lucia",
+        "puntos": -150,
+        "fecha": "24-06-2024"
+    }
+]
