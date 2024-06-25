@@ -380,7 +380,7 @@ def inicio_juego():
 
     evento_tiempo = pygame.USEREVENT
     pygame.time.set_timer(evento_tiempo, 1000)
-    segundero = 30
+    segundero = 15
     puntos = 0
     pregunta_actual = 0
     intentos = 3  # Contador de intentos
@@ -414,8 +414,6 @@ def inicio_juego():
                         intentos -= 1
                         sonido_error.play()
 
-                    pregunta_actual += 1
-                    segundero = 30
                 elif button_B.collidepoint(evento.pos):
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "b":
                         pregunta_actual += 1
@@ -428,6 +426,7 @@ def inicio_juego():
                         intentos -= 1
                         sonido_error.play()
                     
+
                 elif button_C.collidepoint(evento.pos):
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "c":
                         pregunta_actual += 1
@@ -440,11 +439,10 @@ def inicio_juego():
                         intentos -= 1
                         sonido_error.play()
 
-                    pregunta_actual += 1
-                    segundero = 30
+
             if segundero == 0:
                     pregunta_actual += 1
-                    segundero = 30
+                    segundero = 15
                     intentos -= 1
                     sonido_error.play()
                     sonido.play()
