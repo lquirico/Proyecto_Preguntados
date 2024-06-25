@@ -3,6 +3,13 @@ import sys
 import os
 import json
 from datetime import datetime
+import random
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 pygame.init()
 
@@ -14,22 +21,47 @@ VERDE = (0, 255, 0)
 ROJO = (255, 0, 0)
 AMARILLO = (255, 255, 0)
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 # Tamaño pantalla
 PANTALLA_TAMAÑO = (600, 1000)
 TAMAÑO_PREGUNTA = (380, 160)
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 # Coordenadas botones
 button_A = pygame.Rect(195, 641, 215, 78)
 button_B = pygame.Rect(195, 744, 215, 78)
 button_C = pygame.Rect(195, 841, 215, 78)
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 # Configurar la pantalla
 ancho, alto = 600, 1000  # Tamaño de pantalla ajustado
 pantalla = pygame.display.set_mode((ancho, alto))
 pygame.display.set_caption("Menú de Pygame")
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 # Posiciones
 posiciones_y = []
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 # Colores
 DORADO = (201, 169, 41)
@@ -37,14 +69,29 @@ NEGRO = (0, 0, 0)
 ROJO = (255, 0, 0)
 BLANCO = (255, 255, 255)
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 # Opciones del menú
 opciones = ["Iniciar Juego", "Top 10 Puntajes", "Ajustes", "Salir"]
 indice_seleccionado = None  # None para indicar que ninguna opción está seleccionada inicialmente
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 # Margen superior e inferior
 margen_superior = 50
 margen_inferior = 50
 espacio_entre_opciones = 130
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 # Cargar imágenes
 icono_iniciar = pygame.image.load('iniciar.png')
@@ -52,17 +99,32 @@ icono_top10 = pygame.image.load('top10.png')
 icono_ajustes = pygame.image.load('ajustes.png')
 icono_salir = pygame.image.load('salir.png')
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 # Redimensionar imágenes a un tamaño mayor (300x100 píxeles)
 icono_iniciar = pygame.transform.scale(icono_iniciar, (300, 100))
 icono_top10 = pygame.transform.scale(icono_top10, (300, 100))
 icono_ajustes = pygame.transform.scale(icono_ajustes, (300, 100))
 icono_salir = pygame.transform.scale(icono_salir, (300, 100))
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 # Ajustar posición de cada opción del menú
 pos_x_iniciar = ancho // 2 - icono_iniciar.get_width() // 2 - 12  # Mover iniciar 10 píxeles a la izquierda
 pos_x_top10 = ancho // 2 - icono_top10.get_width() // 2 - 15  # Mover top 10 15 píxeles a la izquierda y luego 15 a la derecha
 pos_x_ajustes = ancho // 2 - icono_ajustes.get_width() // 2 - 15  # Mover ajustes 15 píxeles a la izquierda
 pos_x_salir = ancho // 2 - icono_salir.get_width() // 2 - 15  # Mover salir 15 píxeles a la izquierda
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 # Dibujar menú
 def dibujar_menu():
@@ -88,11 +150,18 @@ def dibujar_menu():
     
     pygame.display.flip()
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 def main():
     global indice_seleccionado
     reloj = pygame.time.Clock()
     corriendo = True
-
+    icono = pygame.image.load("WhatsApp Image 2024-06-20 at 21.59.16.jpeg")
+    pygame.display.set_caption("Juego preguntados")
+    pygame.display.set_icon(icono)
     while corriendo:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -122,6 +191,11 @@ def main():
     pygame.quit()
     sys.exit()
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 def parse_csv(nombre_archivo: str):
     """Esta funcion convierte el contenido del archivo csv a una lista con diccionarios
 
@@ -146,6 +220,12 @@ def parse_csv(nombre_archivo: str):
     else:
         print("ARCHIVO NO ENCONTRADO")
         return []
+    
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 def blit_text(surface, text, pos, font, color=pygame.Color('black')):
     words = [word.split(' ') for word in text.splitlines()]
@@ -163,6 +243,12 @@ def blit_text(surface, text, pos, font, color=pygame.Color('black')):
             x += word_width + space
         x = pos[0]
         y += word_height
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 def guardar_puntajes(nombre, puntos):
     """Esta funcion se encarga de guardar los puntajes del juego , guardando los datos en un diccionario, el nombre, los puntos y la fecha en la que se jugo
@@ -187,6 +273,10 @@ def guardar_puntajes(nombre, puntos):
 
     with open("puntajes.json", "w", encoding="utf-8") as archivo:
         json.dump(puntajes, archivo, ensure_ascii=False, indent=4)
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 def pedir_nombre(pantalla, fuente):
     """Esta funcion solicita el nombre del jugador en pantalla para ser ingresado por teclado y con enter ser enviado
@@ -222,6 +312,10 @@ def pedir_nombre(pantalla, fuente):
 
     return nombre
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 def mostrar_puntajes(pantalla, fuente):
     """Esta funcion muestra los puntajes en pantalla
 
@@ -248,6 +342,10 @@ def mostrar_puntajes(pantalla, fuente):
     pygame.time.wait(8000)  # Esperar 8 segundos antes de regresar al menú principal
     main()
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 def inicio_juego():
     """Esta funcion da inicio al juego bliteando las imagenes con los botones y toda la logica para el juego, 
     una vez finalizado el juego y guardado y mostrado los 10 mejores puntos vuelve al menu principal
@@ -255,7 +353,7 @@ def inicio_juego():
     lista_preguntas = parse_csv('preguntas.csv')
     if not lista_preguntas:
         return
-
+    random.shuffle(lista_preguntas)
     pantalla = pygame.display.set_mode(PANTALLA_TAMAÑO)
     icono = pygame.image.load("WhatsApp Image 2024-06-20 at 21.59.16.jpeg")
     pygame.display.set_caption("Juego preguntados")
@@ -300,11 +398,13 @@ def inicio_juego():
                 flag_run = False
             elif evento.type == pygame.MOUSEMOTION:
                 x, y = evento.pos
+
             if evento.type == evento_tiempo:
                 segundero -= 1
             elif evento.type == pygame.MOUSEBUTTONDOWN:
                 if button_A.collidepoint(evento.pos):
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "a":
+                        pregunta_actual += 1
                         puntos += 50
                         sonido.stop()
                         sonido.play()
@@ -318,19 +418,19 @@ def inicio_juego():
                     segundero = 30
                 elif button_B.collidepoint(evento.pos):
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "b":
+                        pregunta_actual += 1
                         puntos += 50
                         sonido.stop()
                         sonido.play()
-                    
+
                     else:
                         puntos -= 50
                         intentos -= 1
                         sonido_error.play()
-
-                    pregunta_actual += 1
-                    segundero = 30
+                    
                 elif button_C.collidepoint(evento.pos):
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "c":
+                        pregunta_actual += 1
                         puntos += 50
                         sonido.stop()
                         sonido.play()
@@ -342,7 +442,12 @@ def inicio_juego():
 
                     pregunta_actual += 1
                     segundero = 30
-                
+            if segundero == 0:
+                    pregunta_actual += 1
+                    segundero = 30
+                    intentos -= 1
+                    sonido_error.play()
+                    sonido.play()
         pantalla.fill(NEGRO)
         texto_segundero = fuente_segundero.render(str(segundero), False, BLANCO)
         texto_puntos = fuente.render(f"Puntos: {puntos}", False, BLANCO)
@@ -353,8 +458,8 @@ def inicio_juego():
         pantalla.blit(imagen_opcion_c_transformada, (120, 830))
         pantalla.blit(icono, (0, 0))
         pantalla.blit(texto_segundero, (35, 340))
-        pantalla.blit(texto_puntos, (450, 50))
-        pantalla.blit(texto_intentos, (450, 100))
+        pantalla.blit(texto_puntos, (430, 880))
+        pantalla.blit(texto_intentos, (430, 910))
 
         pregunta = lista_preguntas[pregunta_actual]["pregunta"]
         respuesta_a = lista_preguntas[pregunta_actual]["respuesta_a"]
@@ -380,6 +485,11 @@ def inicio_juego():
             flag_run = False
 
     main()
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 main()
 pygame.quit()
