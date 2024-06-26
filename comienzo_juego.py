@@ -2,6 +2,7 @@ import pygame
 import sys
 import os
 import json
+import csv
 from datetime import datetime
 import random
 
@@ -206,15 +207,26 @@ def parse_csv(nombre_archivo: str):
         lista_preguntas(list[dict]): retorna una lista con diccionarios con el contenido del csv 
     """
     lista_preguntas = []
+    columnas_requeridas = ["porcentaje_aciertos", "cantidad_fallos", "cantidad_aciertos", "cantidad_veces_preguntada"]
+
     if os.path.exists(nombre_archivo):
         with open(nombre_archivo, "r", encoding="utf-8") as archivo:
-            primer_linea = archivo.readline().replace("\n", "")
-            lista_claves = primer_linea.split(",")
-
-            for linea in archivo:
-                linea_aux = linea.replace("\n", "")
-                lista_valores = linea_aux.split(",")
-                diccionario_aux = {lista_claves[i]: lista_valores[i] for i in range(len(lista_claves))}
+            reader = csv.DictReader(archivo)
+            for row in reader:
+                for columna in columnas_requeridas:
+                    if columna not in row or row[columna] == '':
+                        row[columna] = 0  # Establecer valor predeterminado
+                diccionario_aux = {
+                    "pregunta": row["pregunta"],
+                    "respuesta_a": row["respuesta_a"],
+                    "respuesta_b": row["respuesta_b"],
+                    "respuesta_c": row["respuesta_c"],
+                    "respuesta_correcta": row["respuesta_correcta"],
+                    "porcentaje_aciertos": float(row["porcentaje_aciertos"]),
+                    "cantidad_fallos": int(row["cantidad_fallos"]),
+                    "cantidad_aciertos": int(row["cantidad_aciertos"]),
+                    "cantidad_veces_preguntada": int(row["cantidad_veces_preguntada"])
+                }
                 lista_preguntas.append(diccionario_aux)
         return lista_preguntas
     else:
@@ -227,6 +239,7 @@ def parse_csv(nombre_archivo: str):
 
 
 
+    
 def blit_text(surface, text, pos, font, color=pygame.Color('black')):
     words = [word.split(' ') for word in text.splitlines()]
     space = font.size(' ')[0]
@@ -243,12 +256,6 @@ def blit_text(surface, text, pos, font, color=pygame.Color('black')):
             x += word_width + space
         x = pos[0]
         y += word_height
-
-
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
 def guardar_puntajes(nombre, puntos):
     """Esta funcion se encarga de guardar los puntajes del juego , guardando los datos en un diccionario, el nombre, los puntos y la fecha en la que se jugo
@@ -406,11 +413,14 @@ def inicio_juego():
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "a":
                         pregunta_actual += 1
                         puntos += 50
+                        segundero = 30
+                        pregunta_actual = (pregunta_actual + 1) % len(lista_preguntas)
                         sonido.stop()
                         sonido.play()
                     
                     else:
                         puntos -= 50
+                        actualizar_estadisticas(lista_preguntas[pregunta_actual], False)
                         intentos -= 1
                         sonido_error.play()
 
@@ -418,11 +428,14 @@ def inicio_juego():
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "b":
                         pregunta_actual += 1
                         puntos += 50
+                        segundero = 30
+                        pregunta_actual = (pregunta_actual + 1) % len(lista_preguntas)
                         sonido.stop()
                         sonido.play()
 
                     else:
                         puntos -= 50
+                        actualizar_estadisticas(lista_preguntas[pregunta_actual], False)
                         intentos -= 1
                         sonido_error.play()
                     
@@ -431,11 +444,14 @@ def inicio_juego():
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "c":
                         pregunta_actual += 1
                         puntos += 50
+                        segundero = 30
+                        pregunta_actual = (pregunta_actual + 1) % len(lista_preguntas)
                         sonido.stop()
                         sonido.play()
                     
                     else:
                         puntos -= 50
+                        actualizar_estadisticas(lista_preguntas[pregunta_actual], False)
                         intentos -= 1
                         sonido_error.play()
 
@@ -479,6 +495,7 @@ def inicio_juego():
             sonido.stop()  # Detener la música
             nombre = pedir_nombre(pantalla, fuente_puntaje)
             guardar_puntajes(nombre, puntos)
+            guardar_estadisticas('preguntas.csv', lista_preguntas)
             mostrar_puntajes(pantalla, fuente_puntaje)
             flag_run = False
 
