@@ -4,7 +4,7 @@ import os
 import json
 from datetime import datetime
 import random
-
+import time
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -156,6 +156,7 @@ def dibujar_menu():
 
 
 def main():
+    press_space_button()
     global indice_seleccionado
     reloj = pygame.time.Clock()
     corriendo = True
@@ -194,7 +195,60 @@ def main():
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+def press_space_button():
+    cortina_izquierda = pygame.image.load("11014.jpg")
+    cortina_izquierda_transformada = pygame.transform.scale(cortina_izquierda,(600,1000))
+    cortina_derecha = pygame.image.load("11014.jpg")
+    cortina_derecha_transformada = pygame.transform.scale(cortina_derecha,(600,1000))
+    # Obtener el tamaño de las cortinas
+    cortina_rect_izquierda = cortina_izquierda_transformada.get_rect()
+    cortina_rect_derecha = cortina_derecha_transformada.get_rect()
+    
+    # Configuración de las posiciones iniciales de las cortinas
+    cortina_rect_izquierda.topleft = (0, 0)
+    cortina_rect_derecha.topright = (600, 0)
 
+    fuente_press_space = pygame.font.SysFont("Arial", 20)
+    texto_press_space = fuente_press_space.render("Press space", True, BLANCO)
+    rectangulo_texto = texto_press_space.get_rect(center=(300, 500))
+
+    flag_corriendo = True
+    mostrar_texto = True
+    abrir_cortinas = False
+    ultimo_tiempo = time.time()
+
+    while flag_corriendo:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                flag_corriendo = False
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                mostrar_texto = False
+                abrir_cortinas = True
+
+                print("Presionó space")
+
+        if abrir_cortinas:
+            if cortina_rect_izquierda.right > 0:
+                cortina_rect_izquierda.x -= 1
+            if cortina_rect_derecha.left < 600:
+                cortina_rect_derecha.x += 1
+            if cortina_rect_izquierda.right <= 0 and cortina_rect_derecha.left >= 600:
+                flag_corriendo = False
+
+        # Alternar la visibilidad del texto cada 2 segundos
+        current_time = time.time()
+        if not abrir_cortinas and current_time - ultimo_tiempo >= 0.5:
+            mostrar_texto = not mostrar_texto
+            ultimo_tiempo = current_time
+
+        pantalla.fill((0, 0, 0))  # Limpiar la pantalla con un color negro
+        pantalla.blit(cortina_izquierda_transformada, cortina_rect_izquierda)
+        pantalla.blit(cortina_derecha_transformada, cortina_rect_derecha)
+        
+        if mostrar_texto:
+            pantalla.blit(texto_press_space, rectangulo_texto)
+
+        pygame.display.update()
 
 def parse_csv(nombre_archivo: str):
     """Esta funcion convierte el contenido del archivo csv a una lista con diccionarios
@@ -291,6 +345,7 @@ def pedir_nombre(pantalla, fuente):
     """
     nombre = ""
     pedir_nombre = True
+    imagen_game_over = pygame.image.load("gameover.jpeg")
 
     while pedir_nombre:
         for evento in pygame.event.get():
@@ -307,6 +362,7 @@ def pedir_nombre(pantalla, fuente):
 
         pantalla.fill(NEGRO)
         texto = fuente.render("Ingrese su nombre: " + nombre, True, BLANCO)
+        pantalla.blit(imagen_game_over,(80,70))
         pantalla.blit(texto, (100, 500))
         pygame.display.flip()
 
@@ -398,7 +454,6 @@ def inicio_juego():
                 flag_run = False
             elif evento.type == pygame.MOUSEMOTION:
                 x, y = evento.pos
-
             if evento.type == evento_tiempo:
                 segundero -= 1
             elif evento.type == pygame.MOUSEBUTTONDOWN:
