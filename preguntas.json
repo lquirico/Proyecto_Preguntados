@@ -1,0 +1,20 @@
+[
+    {
+        "pregunta": "1",
+        "opciones": [
+            "1",
+            "2",
+            "3"
+        ],
+        "respuesta_correcta": "2"
+    },
+    {
+        "pregunta": "1",
+        "opciones": [
+            "2",
+            "3",
+            "4"
+        ],
+        "respuesta_correcta": "2"
+    }
+]
