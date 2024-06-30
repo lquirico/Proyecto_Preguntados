@@ -163,6 +163,7 @@ def main():
     icono = pygame.image.load("WhatsApp Image 2024-06-20 at 21.59.16.jpeg")
     pygame.display.set_caption("Juego preguntados")
     pygame.display.set_icon(icono)
+    fuente_puntaje_boton = pygame.font.SysFont("Arial", 20)
     while corriendo:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -177,7 +178,7 @@ def main():
                             inicio_juego()
                             # Aquí se podría llamar a la función para iniciar el juego
                         elif indice_seleccionado == 1:
-                            mostrar_puntajes(pantalla,pygame.font.SysFont("Arial", 30))
+                            mostrar_puntajes(pantalla,fuente_puntaje_boton)
                             print("Top 10 Puntajes seleccionado")
                             # Mostrar el TOP 10 de puntajes
                         elif indice_seleccionado == 2:
@@ -209,7 +210,7 @@ def press_space_button():
     cortina_rect_derecha.topright = (600, 0)
 
     fuente_press_space = pygame.font.SysFont("Arial", 20)
-    texto_press_space = fuente_press_space.render("Press space", True, BLANCO)
+    texto_press_space = fuente_press_space.render("press space to start", True, BLANCO)
     rectangulo_texto = texto_press_space.get_rect(center=(300, 500))
 
     flag_corriendo = True
@@ -384,18 +385,25 @@ def mostrar_puntajes(pantalla, fuente):
             puntajes = json.load(archivo)
     else:
         puntajes = []
-
+    imagen_marco_top = pygame.image.load("marcoTop.png")
+    imagen_marco_top_transformada = pygame.transform.scale(imagen_marco_top, (850,1050))
+    imagen_top_10 = pygame.image.load("top10image.jpeg")
+    imagen_top_10_transformada = pygame.transform.scale(imagen_top_10,(250,100))
+    y_separacion = 300
     pantalla.fill(NEGRO)
-    y_offset = 50
+    pantalla.blit(imagen_marco_top_transformada, (-105,0))
+    pantalla.blit(imagen_top_10_transformada, (170,120))
     for puntaje in puntajes:
         texto = f"{puntaje['nombre']}: {puntaje['puntos']} puntos (Fecha: {puntaje['fecha']})"
         superficie_texto = fuente.render(texto, True, BLANCO)
-        pantalla.blit(superficie_texto, (10, y_offset))
-        y_offset += 50
-        if y_offset > 900:
+        pantalla.blit(superficie_texto, (120, y_separacion))
+        y_separacion += 50
+        if y_separacion > 900:
             break
-    pygame.display.flip()
-    pygame.time.wait(8000)  # Esperar 8 segundos antes de regresar al menú principal
+    
+    
+    pygame.display.update()
+    pygame.time.wait(4000)  # Esperar 4 segundos antes de regresar al menú principal
     main()
 
 
@@ -430,7 +438,7 @@ def inicio_juego():
     imagen_pregunta_tranformada = pygame.transform.scale(imagen_pregunta, (500, 300))
 
     fuente_puntaje = pygame.font.SysFont("Arial",20)
-    fuente = pygame.font.SysFont("Arial", 30)
+    fuente_texto = pygame.font.SysFont("Arial", 30)
     fuente_respuesta = pygame.font.SysFont("Arial", 20)
     fuente_segundero = pygame.font.SysFont("Arial", 40)
 
@@ -505,8 +513,8 @@ def inicio_juego():
                     sonido.play()
         pantalla.fill(NEGRO)
         texto_segundero = fuente_segundero.render(str(segundero), False, BLANCO)
-        texto_puntos = fuente.render(f"Puntos: {puntos}", False, BLANCO)
-        texto_intentos = fuente.render(f"Intentos: {intentos}", False, BLANCO)
+        texto_puntos = fuente_texto.render(f"Puntos: {puntos}", False, BLANCO)
+        texto_intentos = fuente_texto.render(f"Intentos: {intentos}", False, BLANCO)
         pantalla.blit(imagen_pregunta_tranformada, (50, 350))
         pantalla.blit(imagen_opcion_a_transformada, (120, 630))
         pantalla.blit(imagen_opcion_b_transformada, (120, 730))
@@ -522,7 +530,7 @@ def inicio_juego():
         respuesta_c = lista_preguntas[pregunta_actual]["respuesta_c"]
 
         carta_pregunta = pygame.Surface(TAMAÑO_PREGUNTA)
-        blit_text(carta_pregunta, pregunta, (10, 10), fuente, BLANCO)
+        blit_text(carta_pregunta, pregunta, (10, 10), fuente_texto, BLANCO)
         pantalla.blit(carta_pregunta, (105, 420))
 
         blit_text(pantalla, respuesta_a, (button_A.x + 10, button_A.y + 20), fuente_respuesta, BLANCO)
