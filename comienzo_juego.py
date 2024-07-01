@@ -44,7 +44,28 @@ def dibujar_menu(pantalla):
     
     pygame.display.flip()
 
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+def actualizar_estadisticas(pregunta, respuesta_correcta):
+    pregunta["cantidad_veces_preguntada"] += 1
+    if respuesta_correcta:
+        pregunta["cantidad_aciertos"] += 1
+    else:
+        pregunta["cantidad_fallos"] += 1
+
+    if pregunta["cantidad_veces_preguntada"] > 0:
+        pregunta["porcentaje_aciertos"] = (pregunta["cantidad_aciertos"] / pregunta["cantidad_veces_preguntada"]) * 100
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+def guardar_estadisticas(nombre_archivo, lista_preguntas):
+    fieldnames = ["pregunta", "respuesta_a", "respuesta_b", "respuesta_c", "respuesta_correcta", "porcentaje_aciertos", "cantidad_fallos", "cantidad_aciertos", "cantidad_veces_preguntada"]
+    with open(nombre_archivo, 'w', newline='', encoding='utf-8') as archivo:
+        writer = csv.DictWriter(archivo, fieldnames=fieldnames)
+        writer.writeheader()
+        for pregunta in lista_preguntas:
+            writer.writerow(pregunta)
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -64,6 +85,8 @@ def main():
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 corriendo = False
+            elif evento.type == pygame.MOUSEMOTION:
+                x, y = evento.pos
             elif evento.type == pygame.MOUSEBUTTONDOWN:
                 x, y = evento.pos
                 for i, (pos_x, pos_y, width, height) in enumerate(posiciones_y):
@@ -94,6 +117,8 @@ def main():
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def press_space_button():
+    """Esta funcion crea una cortina animada como los juegos clasicos, una vez precionado el boton space el juego comienza y va al menu
+    """
     cortina_izquierda = pygame.image.load("image/11014.jpg")
     cortina_izquierda_transformada = pygame.transform.scale(cortina_izquierda,(600,1000))
     cortina_derecha = pygame.image.load("image/11014.jpg")
@@ -158,21 +183,31 @@ def parse_csv(nombre_archivo: str):
         lista_preguntas(list[dict]): retorna una lista con diccionarios con el contenido del csv 
     """
     lista_preguntas = []
+    columnas_requeridas = ["porcentaje_aciertos", "cantidad_fallos", "cantidad_aciertos", "cantidad_veces_preguntada"]
+
     if os.path.exists(nombre_archivo):
         with open(nombre_archivo, "r", encoding="utf-8") as archivo:
-            primer_linea = archivo.readline().replace("\n", "")
-            lista_claves = primer_linea.split(",")
-
-            for linea in archivo:
-                linea_aux = linea.replace("\n", "")
-                lista_valores = linea_aux.split(",")
-                diccionario_aux = {lista_claves[i]: lista_valores[i] for i in range(len(lista_claves))}
+            reader = csv.DictReader(archivo)
+            for row in reader:
+                for columna in columnas_requeridas:
+                    if columna not in row or row[columna] == '':
+                        row[columna] = 0  # Establecer valor predeterminado
+                diccionario_aux = {
+                    "pregunta": row["pregunta"],
+                    "respuesta_a": row["respuesta_a"],
+                    "respuesta_b": row["respuesta_b"],
+                    "respuesta_c": row["respuesta_c"],
+                    "respuesta_correcta": row["respuesta_correcta"],
+                    "porcentaje_aciertos": float(row["porcentaje_aciertos"]),
+                    "cantidad_fallos": int(row["cantidad_fallos"]),
+                    "cantidad_aciertos": int(row["cantidad_aciertos"]),
+                    "cantidad_veces_preguntada": int(row["cantidad_veces_preguntada"])
+                }
                 lista_preguntas.append(diccionario_aux)
         return lista_preguntas
     else:
         print("ARCHIVO NO ENCONTRADO")
         return []
-    
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -236,7 +271,7 @@ def inicio_juego():
 
     evento_tiempo = pygame.USEREVENT
     pygame.time.set_timer(evento_tiempo, 1000)
-    segundero = 30
+    segundero = 15
     puntos = 0
     pregunta_actual = 0
     intentos = 3  # Contador de intentos
@@ -261,12 +296,14 @@ def inicio_juego():
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "a":
                         pregunta_actual += 1
                         puntos += 50
-                        segundero = 30
+                        actualizar_estadisticas(lista_preguntas[pregunta_actual],True)
+                        segundero = 15
                         sonido.stop()
                         sonido.play()
                     
                     else:
                         puntos -= 50
+                        actualizar_estadisticas(lista_preguntas[pregunta_actual], False)
                         intentos -= 1
                         sonido_error.play()
 
@@ -275,12 +312,14 @@ def inicio_juego():
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "b":
                         pregunta_actual += 1
                         puntos += 50
-                        segundero = 30
+                        actualizar_estadisticas(lista_preguntas[pregunta_actual],True)
+                        segundero = 15
                         sonido.stop()
                         sonido.play()
 
                     else:
                         puntos -= 50
+                        actualizar_estadisticas(lista_preguntas[pregunta_actual], False)
                         intentos -= 1
                         sonido_error.play()
                     
@@ -288,18 +327,20 @@ def inicio_juego():
                     if lista_preguntas[pregunta_actual]["respuesta_correcta"] == "c":
                         pregunta_actual += 1
                         puntos += 50
-                        segundero = 30
+                        actualizar_estadisticas(lista_preguntas[pregunta_actual],True)
+                        segundero = 15
                         sonido.stop()
                         sonido.play()
                     
                     else:
                         puntos -= 50
+                        actualizar_estadisticas(lista_preguntas[pregunta_actual], False)
                         intentos -= 1
                         sonido_error.play()
 
             if segundero == 0:
                     pregunta_actual += 1
-                    segundero = 30
+                    segundero = 15
                     intentos -= 1
                     sonido_error.play()
                     sonido.play()

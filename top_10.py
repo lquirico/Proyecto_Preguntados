@@ -99,7 +99,7 @@ def mostrar_puntajes(pantalla, fuente):
     pantalla.blit(imagen_top_10_transformada, (170,120))
     for puntaje in puntajes:
         texto = f"{puntaje['nombre']}: {puntaje['puntos']} puntos (Fecha: {puntaje['fecha']})"
-        superficie_texto = fuente.render(texto, True, BLANCO)
+        superficie_texto = fuente.render(texto,True,BLANCO)
         pantalla.blit(superficie_texto, (120, y_separacion))
         y_separacion += 50
         if y_separacion > 900:
