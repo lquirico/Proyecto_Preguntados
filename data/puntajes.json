@@ -5,6 +5,11 @@
         "fecha": "24-06-2024"
     },
     {
+        "nombre": "maximiliano",
+        "puntos": 400,
+        "fecha": "30-06-2024"
+    },
+    {
         "nombre": "rodri",
         "puntos": 250,
         "fecha": "27-06-2024"
@@ -13,6 +18,11 @@
         "nombre": "kolo",
         "puntos": 150,
         "fecha": "26-06-2024"
+    },
+    {
+        "nombre": "karen",
+        "puntos": 150,
+        "fecha": "30-06-2024"
     },
     {
         "nombre": "Diego",
@@ -37,16 +47,6 @@
     {
         "nombre": "luis",
         "puntos": 0,
-        "fecha": "24-06-2024"
-    },
-    {
-        "nombre": "loko",
-        "puntos": 0,
-        "fecha": "26-06-2024"
-    },
-    {
-        "nombre": "Gabriel",
-        "puntos": -50,
         "fecha": "24-06-2024"
     }
 ]
