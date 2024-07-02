@@ -207,6 +207,7 @@ def parse_csv(nombre_archivo: str):
         lista_preguntas(list[dict]): retorna una lista con diccionarios con el contenido del csv 
     """
     lista_preguntas = []
+    columnas_requeridas = ["porcentaje_aciertos", "cantidad_fallos", "cantidad_aciertos", "cantidad_veces_preguntada"]
     if os.path.exists(nombre_archivo):
         with open(nombre_archivo, "r", encoding="utf-8") as archivo:
             reader = csv.DictReader(archivo)
