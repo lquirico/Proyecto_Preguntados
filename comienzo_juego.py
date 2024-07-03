@@ -60,6 +60,13 @@ def actualizar_estadisticas(pregunta, respuesta_correcta):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def guardar_estadisticas(nombre_archivo, lista_preguntas):
+    """Esta funcion guarda los datos recolectados del juego, porcentaje de aciertos, 
+    cantidad de fallos, cantidad de aciertos, cantidad de veces preguntada
+
+    Args:
+        nombre_archivo (str): nombre_archivo es el path donde se va a guardar el juego en el archivo csv
+        lista_preguntas (list[dict]): Es una lista de diccionarios que se va a iterar para escribir los datos nuevos
+    """
     fieldnames = ["pregunta", "respuesta_a", "respuesta_b", "respuesta_c", "respuesta_correcta", "porcentaje_aciertos", "cantidad_fallos", "cantidad_aciertos", "cantidad_veces_preguntada"]
     with open(nombre_archivo, 'w', newline='', encoding='utf-8') as archivo:
         writer = csv.DictWriter(archivo, fieldnames=fieldnames)
@@ -330,12 +337,20 @@ def inicio_juego():
         pantalla.blit(texto_segundero, (35, 340))
         pantalla.blit(texto_puntos, (430, 880))
         pantalla.blit(texto_intentos, (430, 910))
+        
+        if intentos == 0 or pregunta_actual >= len(lista_preguntas) :
+            pregunta_actual = 0
+            sonido.stop()  # Detener la música
+            nombre = pedir_nombre(pantalla, fuente_puntaje)
+            guardar_estadisticas("data\preguntas.csv",lista_preguntas)
+            guardar_puntajes(nombre, puntos)
+            mostrar_puntajes(pantalla, fuente_puntaje)
+            flag_run = False
 
         pregunta = lista_preguntas[pregunta_actual]["pregunta"]
         respuesta_a = lista_preguntas[pregunta_actual]["respuesta_a"]
         respuesta_b = lista_preguntas[pregunta_actual]["respuesta_b"]
         respuesta_c = lista_preguntas[pregunta_actual]["respuesta_c"]
-
         carta_pregunta = pygame.Surface(TAMAÑO_PREGUNTA)
         blit_text(carta_pregunta, pregunta, (10, 10), fuente_texto, BLANCO)
         pantalla.blit(carta_pregunta, (105, 420))
@@ -346,13 +361,6 @@ def inicio_juego():
 
         pygame.display.update()
 
-        if intentos == 0 or pregunta_actual >= len(lista_preguntas) :
-            pregunta_actual = 0
-            sonido.stop()  # Detener la música
-            nombre = pedir_nombre(pantalla, fuente_puntaje)
-            guardar_puntajes(nombre, puntos)
-            mostrar_puntajes(pantalla, fuente_puntaje)
-            flag_run = False
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

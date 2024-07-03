@@ -1,5 +1,15 @@
 [
     {
+        "nombre": "Lucia",
+        "puntos": 800,
+        "fecha": "02-07-2024"
+    },
+    {
+        "nombre": "rodri",
+        "puntos": 700,
+        "fecha": "02-07-2024"
+    },
+    {
         "nombre": "Gabriel",
         "puntos": 450,
         "fecha": "02-07-2024"
