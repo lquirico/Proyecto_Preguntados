@@ -1,0 +1,11 @@
+[
+    {
+        "pregunta": "quien gano el mundial 2022?",
+        "opciones": [
+            "Mexico",
+            "Argentina",
+            "Holanda"
+        ],
+        "respuesta_correcta": "2"
+    }
+]
