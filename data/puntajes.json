@@ -10,6 +10,11 @@
         "fecha": "02-07-2024"
     },
     {
+        "nombre": "Diego",
+        "puntos": 750,
+        "fecha": "03-07-2024"
+    },
+    {
         "nombre": "rodri",
         "puntos": 700,
         "fecha": "02-07-2024"
@@ -25,6 +30,11 @@
         "fecha": "02-07-2024"
     },
     {
+        "nombre": "",
+        "puntos": 450,
+        "fecha": "03-07-2024"
+    },
+    {
         "nombre": "fernando",
         "puntos": 250,
         "fecha": "03-07-2024"
@@ -37,16 +47,6 @@
     {
         "nombre": "Ricardo",
         "puntos": 100,
-        "fecha": "02-07-2024"
-    },
-    {
-        "nombre": "ko",
-        "puntos": 100,
-        "fecha": "02-07-2024"
-    },
-    {
-        "nombre": "luis tuli",
-        "puntos": 50,
         "fecha": "02-07-2024"
     }
 ]
