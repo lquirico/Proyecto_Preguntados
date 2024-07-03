@@ -153,6 +153,7 @@ def inicio_juego():
                 sonido.stop()
             elif evento.type == pygame.MOUSEMOTION:
                 x, y = evento.pos
+                print(f"{x},{y}")
             if evento.type == evento_tiempo:
                 segundero -= 1
             elif evento.type == pygame.MOUSEBUTTONDOWN:
@@ -239,7 +240,6 @@ def inicio_juego():
         carta_pregunta = pygame.Surface(TAMAÑO_PREGUNTA)
         blit_text(carta_pregunta, pregunta, (10, 10), fuente_texto, BLANCO)
         pantalla.blit(carta_pregunta, (105, 420))
-
         blit_text(pantalla, respuesta_a, (button_A.x + 10, button_A.y + 20), fuente_respuesta, BLANCO)
         blit_text(pantalla, respuesta_b, (button_B.x + 10, button_B.y + 20), fuente_respuesta, BLANCO)
         blit_text(pantalla, respuesta_c, (button_C.x + 10, button_C.y + 20), fuente_respuesta, BLANCO)

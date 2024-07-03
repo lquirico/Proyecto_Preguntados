@@ -339,12 +339,13 @@ def press_space_button():
     cortina_rect_derecha.topright = (600, 0)
 
     fuente_press_space = pygame.font.SysFont("Arial", 20)
+    fuente_desarrollado_por = pygame.font.SysFont("Arial",15)
     texto_press_space = fuente_press_space.render("press space to start", True, BLANCO)
     #rectangulo_texto obtiene el tamaño de rectangulo de texto_press_space y lo centra en las cordenadas indicadas como argumento en la 
     # funcion get_rect()
     rectangulo_texto = texto_press_space.get_rect(center=(300, 500))
-    texto_desarrollo = fuente_press_space.render("Desarrollado por: Pedro Gabriel Paz, Lucia Quirico, Diego Javier Olivera", True, BLANCO)
-    rectangulo_desarrollo = texto_desarrollo.get_rect(center = (300,800))
+    texto_desarrollo = fuente_desarrollado_por.render("Desarrollado por: Pedro Gabriel Paz, Lucia Quirico, Diego Javier Olivera", True, BLANCO)
+    rectangulo_desarrollo = texto_desarrollo.get_rect(center = (300,950))
     flag_corriendo = True
     mostrar_texto = True
     abrir_cortinas = False
