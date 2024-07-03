@@ -1,5 +1,25 @@
 [
     {
+        "nombre": "Lucia",
+        "puntos": 800,
+        "fecha": "02-07-2024"
+    },
+    {
+        "nombre": "jorge",
+        "puntos": 750,
+        "fecha": "02-07-2024"
+    },
+    {
+        "nombre": "rodri",
+        "puntos": 700,
+        "fecha": "02-07-2024"
+    },
+    {
+        "nombre": "poli",
+        "puntos": 700,
+        "fecha": "02-07-2024"
+    },
+    {
         "nombre": "Gabriel",
         "puntos": 450,
         "fecha": "02-07-2024"
@@ -12,6 +32,16 @@
     {
         "nombre": "Ricardo",
         "puntos": 100,
+        "fecha": "02-07-2024"
+    },
+    {
+        "nombre": "ko",
+        "puntos": 100,
+        "fecha": "02-07-2024"
+    },
+    {
+        "nombre": "luis tuli",
+        "puntos": 50,
         "fecha": "02-07-2024"
     },
     {

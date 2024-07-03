@@ -3,12 +3,9 @@ from constantes import *
 from top_10 import *
 import pygame
 import sys
-import os
-import json
-import csv
 from datetime import datetime
 import random
-import time
+
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -48,27 +45,6 @@ def dibujar_menu(pantalla):
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-def actualizar_estadisticas(pregunta, respuesta_correcta):
-    pregunta["cantidad_veces_preguntada"] += 1
-    if respuesta_correcta:
-        pregunta["cantidad_aciertos"] += 1
-    else:
-        pregunta["cantidad_fallos"] += 1
-
-    if pregunta["cantidad_veces_preguntada"] > 0:
-        pregunta["porcentaje_aciertos"] = (pregunta["cantidad_aciertos"] / pregunta["cantidad_veces_preguntada"]) * 100
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-def guardar_estadisticas(nombre_archivo, lista_preguntas):
-    fieldnames = ["pregunta", "respuesta_a", "respuesta_b", "respuesta_c", "respuesta_correcta", "porcentaje_aciertos", "cantidad_fallos", "cantidad_aciertos", "cantidad_veces_preguntada"]
-    with open(nombre_archivo, 'w', newline='', encoding='utf-8') as archivo:
-        writer = csv.DictWriter(archivo, fieldnames=fieldnames)
-        writer.writeheader()
-        for pregunta in lista_preguntas:
-            writer.writerow(pregunta)
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -119,102 +95,6 @@ def main():
     sys.exit()
 
 
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-def press_space_button():
-    """Esta funcion crea una cortina animada como los juegos clasicos, una vez precionado el boton space el juego comienza y va al menu
-    """
-
-    #Carga de imagenes y escalado
-    cortina_izquierda = pygame.image.load("image/11014.jpg")
-    cortina_izquierda_transformada = pygame.transform.scale(cortina_izquierda,(600,1000))
-    cortina_derecha = pygame.image.load("image/11014.jpg")
-    cortina_derecha_transformada = pygame.transform.scale(cortina_derecha,(600,1000))
-    # Obtener el tamaño de las cortinas por medio de get_rect, obteniendo el tamaño del rectangulo de la misma imagen
-    cortina_rect_izquierda = cortina_izquierda_transformada.get_rect()
-    cortina_rect_derecha = cortina_derecha_transformada.get_rect()
-    
-    # Configuración de las posiciones iniciales de las cortinas una arriba a la izquierda y otra en medio a 600px de x, topleft y 
-    # top right son propiedades de la clase rect, topleft indica que la esquina superior izquierda comienza en 0  y top right indica
-    #  que la esquina superior derecha comienza en 600
-    cortina_rect_izquierda.topleft = (0, 0)
-    cortina_rect_derecha.topright = (600, 0)
-
-    fuente_press_space = pygame.font.SysFont("Arial", 20)
-    texto_press_space = fuente_press_space.render("press space to start", True, BLANCO)
-    #rectangulo_texto obtiene el tamaño de rectangulo de texto_press_space y lo centra en las cordenadas indicadas como argumento en la 
-    # funcion get_rect()
-    rectangulo_texto = texto_press_space.get_rect(center=(300, 500))
-    texto_desarrollo = fuente_press_space.render("Desarrollado por: Pedro Gabriel Paz, Lucia Quirico, Diego Javier Olivera", True, BLANCO)
-    rectangulo_desarrollo = texto_desarrollo.get_rect(center = (300,800))
-    flag_corriendo = True
-    mostrar_texto = True
-    abrir_cortinas = False
-    ultimo_tiempo = time.time()
-
-    while flag_corriendo:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                flag_corriendo = False
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                mostrar_texto = False
-                abrir_cortinas = True
-
-
-        if abrir_cortinas:
-            if cortina_rect_izquierda.right > 0:
-                cortina_rect_izquierda.x -= 1
-            if cortina_rect_derecha.left < 600:
-                cortina_rect_derecha.x += 1
-            if cortina_rect_izquierda.right <= 0 and cortina_rect_derecha.left >= 600:
-                flag_corriendo = False
-
-        # Alternar la visibilidad del texto cada 2 segundos
-        current_time = time.time()
-        if not abrir_cortinas and current_time - ultimo_tiempo >= 0.5:
-            mostrar_texto = not mostrar_texto
-            ultimo_tiempo = current_time
-
-        pantalla.fill((0, 0, 0))  # Limpiar la pantalla con un color negro
-        pantalla.blit(cortina_izquierda_transformada, cortina_rect_izquierda)
-        pantalla.blit(cortina_derecha_transformada, cortina_rect_derecha)
-        
-        if mostrar_texto:
-            pantalla.blit(texto_press_space, rectangulo_texto)
-            pantalla.blit(texto_desarrollo, rectangulo_desarrollo)
-        pygame.display.update()
-
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-def blit_text(surface, text, pos, font, color=pygame.Color('black')):
-    words = [word.split(' ') for word in text.splitlines()]
-    space = font.size(' ')[0]
-    max_width, max_height = surface.get_size()
-    x, y = pos
-    for line in words:
-        for word in line:
-            word_surface = font.render(word, False, color)
-            word_width, word_height = word_surface.get_size()
-            if x + word_width >= max_width:
-                x = pos[0]
-                y += word_height
-            surface.blit(word_surface, (x, y))
-            x += word_width + space
-        x = pos[0]
-        y += word_height
-
-def actualizar_estadisticas(pregunta, respuesta_correcta):
-    pregunta["cantidad_veces_preguntada"] += 1
-    if respuesta_correcta:
-        pregunta["cantidad_aciertos"] += 1
-    else:
-        pregunta["cantidad_fallos"] += 1
-
-    if pregunta["cantidad_veces_preguntada"] > 0:
-        pregunta["porcentaje_aciertos"] = (pregunta["cantidad_aciertos"] / pregunta["cantidad_veces_preguntada"]) * 100
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -273,6 +153,7 @@ def inicio_juego():
                 sonido.stop()
             elif evento.type == pygame.MOUSEMOTION:
                 x, y = evento.pos
+                print(f"{x},{y}")
             if evento.type == evento_tiempo:
                 segundero -= 1
             elif evento.type == pygame.MOUSEBUTTONDOWN:
@@ -323,9 +204,11 @@ def inicio_juego():
                         sonido_error.play()
 
             if segundero == 0:
+                    actualizar_estadisticas(lista_preguntas[pregunta_actual], False)
                     pregunta_actual += 1
                     segundero = 15
                     intentos -= 1
+                    puntos -= 50
                     sonido_error.play()
                     sonido.stop()
                     sonido.play()
@@ -341,30 +224,29 @@ def inicio_juego():
         pantalla.blit(texto_segundero, (35, 340))
         pantalla.blit(texto_puntos, (430, 880))
         pantalla.blit(texto_intentos, (430, 910))
+        
+        if intentos == 0 or pregunta_actual >= len(lista_preguntas) :
+            pregunta_actual = 0
+            sonido.stop()  # Detener la música
+            nombre = pedir_nombre(pantalla, fuente_puntaje)
+            guardar_estadisticas("data\preguntas.csv",lista_preguntas)
+            guardar_puntajes(nombre, puntos)
+            mostrar_puntajes(pantalla, fuente_puntaje)
+            flag_run = False
 
         pregunta = lista_preguntas[pregunta_actual]["pregunta"]
         respuesta_a = lista_preguntas[pregunta_actual]["respuesta_a"]
         respuesta_b = lista_preguntas[pregunta_actual]["respuesta_b"]
         respuesta_c = lista_preguntas[pregunta_actual]["respuesta_c"]
-
         carta_pregunta = pygame.Surface(TAMAÑO_PREGUNTA)
         blit_text(carta_pregunta, pregunta, (10, 10), fuente_texto, BLANCO)
         pantalla.blit(carta_pregunta, (105, 420))
-
         blit_text(pantalla, respuesta_a, (button_A.x + 10, button_A.y + 20), fuente_respuesta, BLANCO)
         blit_text(pantalla, respuesta_b, (button_B.x + 10, button_B.y + 20), fuente_respuesta, BLANCO)
         blit_text(pantalla, respuesta_c, (button_C.x + 10, button_C.y + 20), fuente_respuesta, BLANCO)
 
         pygame.display.update()
 
-        if intentos == 0 or pregunta_actual >= len(lista_preguntas) :
-            pregunta_actual = 0
-            sonido.stop()  # Detener la música
-            nombre = pedir_nombre(pantalla, fuente_puntaje)
-            guardar_puntajes(nombre, puntos)
-            guardar_estadisticas('preguntas.csv', lista_preguntas)
-            mostrar_puntajes(pantalla, fuente_puntaje)
-            flag_run = False
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

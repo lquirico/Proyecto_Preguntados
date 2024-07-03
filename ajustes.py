@@ -5,17 +5,27 @@ import json
 import csv
 from tkinter import Tk, filedialog
 from config import *
-
-
+import time
+from constantes import *
 # Funciones relacionadas con pygame y UI
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 def dibujar_flecha_retroceso(pantalla):
     pygame.draw.polygon(pantalla, BLANCO, [(10, 20), (30, 10), (30, 30)])  # Dibujar una flecha simple
 
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 def clic_en_flecha_retroceso(pos):
     x, y = pos
     return 10 <= x <= 30 and 10 <= y <= 30
+
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 def mostrar_ajustes(pantalla):
     pantalla.fill(NEGRO)
@@ -56,6 +66,10 @@ def mostrar_ajustes(pantalla):
                     print("Agregar Preguntas seleccionado")
                     mostrar_menu_agregar_preguntas(pantalla, mostrar_ajustes)  # Mostrar menú de agregar preguntas
                     esperando_seleccion = False
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 def mostrar_volumen(pantalla):
     pantalla.fill(NEGRO)
@@ -125,18 +139,85 @@ def mostrar_volumen(pantalla):
 volumen_activo = True
 volumen_nivel = 100  # Nivel de volumen inicial (puede ser de 0 a 100)
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+def blit_text(surface, text, pos, font, color=pygame.Color('black')):
+    words = [word.split(' ') for word in text.splitlines()]
+    space = font.size(' ')[0]
+    max_width, max_height = surface.get_size()
+    x, y = pos
+    for line in words:
+        for word in line:
+            word_surface = font.render(word, False, color)
+            word_width, word_height = word_surface.get_size()
+            if x + word_width >= max_width:
+                x = pos[0]
+                y += word_height
+            surface.blit(word_surface, (x, y))
+            x += word_width + space
+        x = pos[0]
+        y += word_height
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 def activar_desactivar_volumen():
     global volumen_activo
     volumen_activo = not volumen_activo
     pygame.mixer.music.set_volume(volumen_nivel / 100.0 if volumen_activo else 0)
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 def ajustar_volumen(cambio):
     global volumen_nivel
     volumen_nivel = max(0, min(100, volumen_nivel + cambio))
     if volumen_activo:
         pygame.mixer.music.set_volume(volumen_nivel / 100.0)
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Funciones para agregar preguntas
+def actualizar_estadisticas(pregunta, respuesta_correcta):
+    """Esta funcion actualiza la estadistica que se encuentra en el csv al final de cada pregunta, sumando de a 1 la cantidad de aciertos y fallos
+    y sacando el porcentaje de la cantidad de veces que fue preguntado y la cantidad de aciertos. 
+
+    Args:
+        pregunta (list[dict]): Recibe como argumento una lista de diccionario
+        respuesta_correcta (bool): Si el bool recibido es True suma un acierto caso contrario suma a cantidad fallido de a 1
+    """
+
+    pregunta["cantidad_veces_preguntada"] += 1
+    if respuesta_correcta:
+        pregunta["cantidad_aciertos"] += 1
+    else:
+        pregunta["cantidad_fallos"] += 1
+
+    if pregunta["cantidad_veces_preguntada"] > 0:
+        pregunta["porcentaje_aciertos"] = (pregunta["cantidad_aciertos"] / pregunta["cantidad_veces_preguntada"]) * 100
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+def guardar_estadisticas(nombre_archivo, lista_preguntas):
+    """Esta funcion guarda los datos recolectados del juego, porcentaje de aciertos, 
+    cantidad de fallos, cantidad de aciertos, cantidad de veces preguntada
+
+    Args:
+        nombre_archivo (str): nombre_archivo es el path donde se va a guardar el juego en el archivo csv
+        lista_preguntas (list[dict]): Es una lista de diccionarios que se va a iterar para escribir los datos nuevos
+    """
+    fieldnames = ["pregunta", "respuesta_a", "respuesta_b", "respuesta_c", "respuesta_correcta", "porcentaje_aciertos", "cantidad_fallos", "cantidad_aciertos", "cantidad_veces_preguntada"]
+    with open(nombre_archivo, 'w', newline='', encoding='utf-8') as archivo:
+        writer = csv.DictWriter(archivo, fieldnames=fieldnames)
+        writer.writeheader()
+        for pregunta in lista_preguntas:
+            writer.writerow(pregunta)
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 def mostrar_menu_agregar_preguntas(pantalla, anterior):
     pantalla.fill(NEGRO)
@@ -177,6 +258,9 @@ def mostrar_menu_agregar_preguntas(pantalla, anterior):
                 elif (alto // 2 - 20) < y <= (alto // 2 + 20):
                     agregar_preguntas_csv()
                     esperando_seleccion = False
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 def parse_csv(nombre_archivo: str):
     """Esta funcion convierte el contenido del archivo csv a una lista con diccionarios
 
@@ -213,13 +297,14 @@ def parse_csv(nombre_archivo: str):
         print("ARCHIVO NO ENCONTRADO")
         return []
 
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 def agregar_pregunta_individual():
     lista_preguntas = parse_csv("data\preguntas.csv")
     pregunta = input("Ingrese la pregunta: ")
     respuesta_a, respuesta_b, respuesta_c = input("Ingrese la opción a: "), input("Ingrese la opción b: "), input("Ingrese la opción c: ")
-    respuesta_correcta = input("Ingrese el número de la respuesta correcta (a, b ,c): ")
+    respuesta_correcta = input("Ingrese el número de la respuesta correcta (a, b ,c): ").lower()
 
     nueva_pregunta = {
         "pregunta": pregunta,
@@ -231,6 +316,75 @@ def agregar_pregunta_individual():
 
     lista_preguntas.append(nueva_pregunta)
     actualizar_csv(lista_preguntas, "data/preguntas.csv")
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+def press_space_button():
+    """Esta funcion crea una cortina animada como los juegos clasicos, una vez precionado el boton space el juego comienza y va al menu
+    """
+
+    #Carga de imagenes y escalado
+    cortina_izquierda = pygame.image.load("image/11014.jpg")
+    cortina_izquierda_transformada = pygame.transform.scale(cortina_izquierda,(600,1000))
+    cortina_derecha = pygame.image.load("image/11014.jpg")
+    cortina_derecha_transformada = pygame.transform.scale(cortina_derecha,(600,1000))
+    # Obtener el tamaño de las cortinas por medio de get_rect, obteniendo el tamaño del rectangulo de la misma imagen
+    cortina_rect_izquierda = cortina_izquierda_transformada.get_rect()
+    cortina_rect_derecha = cortina_derecha_transformada.get_rect()
+    
+    # Configuración de las posiciones iniciales de las cortinas una arriba a la izquierda y otra en medio a 600px de x, topleft y 
+    # top right son propiedades de la clase rect, topleft indica que la esquina superior izquierda comienza en 0  y top right indica
+    #  que la esquina superior derecha comienza en 600
+    cortina_rect_izquierda.topleft = (0, 0)
+    cortina_rect_derecha.topright = (600, 0)
+
+    fuente_press_space = pygame.font.SysFont("Arial", 20)
+    fuente_desarrollado_por = pygame.font.SysFont("Arial",15)
+    texto_press_space = fuente_press_space.render("press space to start", True, BLANCO)
+    #rectangulo_texto obtiene el tamaño de rectangulo de texto_press_space y lo centra en las cordenadas indicadas como argumento en la 
+    # funcion get_rect()
+    rectangulo_texto = texto_press_space.get_rect(center=(300, 500))
+    texto_desarrollo = fuente_desarrollado_por.render("Desarrollado por: Pedro Gabriel Paz, Lucia Quirico, Diego Javier Olivera", True, BLANCO)
+    rectangulo_desarrollo = texto_desarrollo.get_rect(center = (300,950))
+    flag_corriendo = True
+    mostrar_texto = True
+    abrir_cortinas = False
+    ultimo_tiempo = time.time()
+
+    while flag_corriendo:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                flag_corriendo = False
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                mostrar_texto = False
+                abrir_cortinas = True
+
+
+        if abrir_cortinas:
+            if cortina_rect_izquierda.right > 0:
+                cortina_rect_izquierda.x -= 1
+            if cortina_rect_derecha.left < 600:
+                cortina_rect_derecha.x += 1
+            if cortina_rect_izquierda.right <= 0 and cortina_rect_derecha.left >= 600:
+                flag_corriendo = False
+
+        # Alternar la visibilidad del texto cada 2 segundos
+        current_time = time.time()
+        if not abrir_cortinas and current_time - ultimo_tiempo >= 0.5:
+            mostrar_texto = not mostrar_texto
+            ultimo_tiempo = current_time
+
+        pantalla.fill((0, 0, 0))  # Limpiar la pantalla con un color negro
+        pantalla.blit(cortina_izquierda_transformada, cortina_rect_izquierda)
+        pantalla.blit(cortina_derecha_transformada, cortina_rect_derecha)
+        pantalla.blit(texto_desarrollo, rectangulo_desarrollo)
+        if mostrar_texto:
+            pantalla.blit(texto_press_space, rectangulo_texto)
+            
+        pygame.display.update()
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 def actualizar_csv(lista_proyectos, nombre_archivo):
     """Esta funcion vuelve a comvertir la lista a un archivo csv para ser guardado, con ,keys()
@@ -256,6 +410,9 @@ def actualizar_csv(lista_proyectos, nombre_archivo):
             escritor_csv.writerow(proyecto)
     
     print(f"El archivo {nombre_archivo} se ha actualizado correctamente.")
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 def agregar_preguntas_csv():
     Tk().withdraw()
@@ -290,3 +447,5 @@ def agregar_preguntas_csv():
 
     except Exception as e:
         print(f"Error al leer el archivo CSV: {e}")
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
