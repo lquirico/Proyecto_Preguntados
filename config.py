@@ -22,6 +22,13 @@ ruta_icono_salir = 'image/SALIR.png'
 ruta_imagen_preguntados = 'image/preguntados.png'
 ruta_fuente = 'data/cross_boxed.ttf'
 
+# Ruta a la música de fondo
+ruta_musica_fondo = 'sound/musica_fondo.mp3'
+
+
+# Volumen inicial de la música (de 0.0 a 1.0)
+volumen_inicial = 0.5  # 50% del volumen máximo
+
 # Cargar imágenes
 icono_iniciar = pygame.image.load(ruta_icono_iniciar)
 icono_top10 = pygame.image.load(ruta_icono_top10)
