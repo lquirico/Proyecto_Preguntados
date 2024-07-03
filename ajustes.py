@@ -256,51 +256,17 @@ def mostrar_menu_agregar_preguntas(pantalla, anterior):
                     agregar_pregunta_individual()
                     esperando_seleccion = False
                 elif (alto // 2 - 20) < y <= (alto // 2 + 20):
-                    agregar_preguntas_csv()
+                    agregar_preguntas_csv("data\preguntas.csv")
                     esperando_seleccion = False
 
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-def parse_csv(nombre_archivo: str):
-    """Esta funcion convierte el contenido del archivo csv a una lista con diccionarios
-
-    Args:
-        nombre_archivo (str): recibe como argumento el path o ruta del archivo csv
-
-    Returns:
-        lista_preguntas(list[dict]): retorna una lista con diccionarios con el contenido del csv 
-    """
-    lista_preguntas = []
-    columnas_requeridas = ["porcentaje_aciertos", "cantidad_fallos", "cantidad_aciertos", "cantidad_veces_preguntada"]
-
-    if os.path.exists(nombre_archivo):
-        with open(nombre_archivo, "r", encoding="utf-8") as archivo:
-            reader = csv.DictReader(archivo)
-            for row in reader:
-                for columna in columnas_requeridas:
-                    if columna not in row or row[columna] == '':
-                        row[columna] = 0  # Establecer valor predeterminado
-                diccionario_aux = {
-                    "pregunta": row["pregunta"],
-                    "respuesta_a": row["respuesta_a"],
-                    "respuesta_b": row["respuesta_b"],
-                    "respuesta_c": row["respuesta_c"],
-                    "respuesta_correcta": row["respuesta_correcta"],
-                    "porcentaje_aciertos": float(row["porcentaje_aciertos"]),
-                    "cantidad_fallos": int(row["cantidad_fallos"]),
-                    "cantidad_aciertos": int(row["cantidad_aciertos"]),
-                    "cantidad_veces_preguntada": int(row["cantidad_veces_preguntada"])
-                }
-                lista_preguntas.append(diccionario_aux)
-        return lista_preguntas
-    else:
-        print("ARCHIVO NO ENCONTRADO")
-        return []
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 def agregar_pregunta_individual():
+    """Esta funcion solicita una pregunta individual para ingresar al juego
+    """
     lista_preguntas = parse_csv("data\preguntas.csv")
     pregunta = input("Ingrese la pregunta: ")
     respuesta_a, respuesta_b, respuesta_c = input("Ingrese la opción a: "), input("Ingrese la opción b: "), input("Ingrese la opción c: ")
@@ -374,7 +340,7 @@ def press_space_button():
             mostrar_texto = not mostrar_texto
             ultimo_tiempo = current_time
 
-        pantalla.fill((0, 0, 0))  # Limpiar la pantalla con un color negro
+        pantalla.fill(NEGRO)  # Limpiar la pantalla con un color negro
         pantalla.blit(cortina_izquierda_transformada, cortina_rect_izquierda)
         pantalla.blit(cortina_derecha_transformada, cortina_rect_derecha)
         pantalla.blit(texto_desarrollo, rectangulo_desarrollo)
@@ -386,7 +352,7 @@ def press_space_button():
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-def actualizar_csv(lista_proyectos, nombre_archivo):
+def actualizar_csv(lista_proyectos, nombre_archivo, manejo_archivo):
     """Esta funcion vuelve a comvertir la lista a un archivo csv para ser guardado, con ,keys()
     guarda en la primera fila las keys y luego comienza a guardar los valores
 
@@ -411,41 +377,80 @@ def actualizar_csv(lista_proyectos, nombre_archivo):
     
     print(f"El archivo {nombre_archivo} se ha actualizado correctamente.")
 
+def sumar_csv_a_csv(lista_proyectos, nombre_archivo):
+    """Esta funcion suma preguntas al archivo csv original del juego, escribiendo desde donde finaliza el archivo original
+    omitiendo los encabazados por que ya estan en el archivo
+
+    Args:
+        lista_proyectos (list[dict]): Recibe una lista de diccionarios 
+        nombre_archivo (str): Nombre del archivo que tiene al que le tiene que sumar las nuevas preguntas 
+    """
+    # Abrir el archivo CSV en modo añadir ('a')
+    with open(nombre_archivo, 'a', newline='', encoding='utf-8') as archivo:
+        # Defino los nombres de las columnas buscando en el primer diccionario todas las claves
+        columnas = lista_proyectos[0].keys()
+        
+        # Creo el escritor CSV con DictWriter que me permite escribir diccionarios
+        escritor_csv = csv.DictWriter(archivo, fieldnames=columnas)
+        
+        # Itero y escribo los datos de cada proyecto en el archivo CSV
+        for proyecto in lista_proyectos:
+            escritor_csv.writerow(proyecto)
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+def parse_csv(nombre_archivo: str):
+    """Esta funcion convierte el contenido del archivo csv a una lista con diccionarios
 
-def agregar_preguntas_csv():
+    Args:
+        nombre_archivo (str): recibe como argumento el path o ruta del archivo csv
+
+    Returns:
+        lista_preguntas(list[dict]): retorna una lista con diccionarios con el contenido del csv 
+    """
+    lista_preguntas = []
+    columnas_requeridas = ["porcentaje_aciertos", "cantidad_fallos", "cantidad_aciertos", "cantidad_veces_preguntada"]
+
+    if os.path.exists(nombre_archivo):
+        with open(nombre_archivo, "r", encoding="utf-8") as archivo:
+            reader = csv.DictReader(archivo)
+            for row in reader:
+                for columna in columnas_requeridas:
+                    if columna not in row or row[columna] == '':
+                        row[columna] = 0  # Establecer valor predeterminado
+                diccionario_aux = {
+                    "pregunta": row["pregunta"],
+                    "respuesta_a": row["respuesta_a"],
+                    "respuesta_b": row["respuesta_b"],
+                    "respuesta_c": row["respuesta_c"],
+                    "respuesta_correcta": row["respuesta_correcta"],
+                    "porcentaje_aciertos": float(row["porcentaje_aciertos"]),
+                    "cantidad_fallos": int(row["cantidad_fallos"]),
+                    "cantidad_aciertos": int(row["cantidad_aciertos"]),
+                    "cantidad_veces_preguntada": int(row["cantidad_veces_preguntada"])
+                }
+                lista_preguntas.append(diccionario_aux)
+        return lista_preguntas
+    else:
+        print("ARCHIVO NO ENCONTRADO")
+        return []
+
+def agregar_preguntas_csv(ruta_csv_original):
+    """Esta funcion agrega preguntas en grupo, ingresando un archivo csv
+
+    Args:
+        ruta_csv_original (str): Path csv del juego donde estan las preguntas originalmente
+    """
     Tk().withdraw()
     file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
-    if not file_path:
+    if file_path == "":
         return
 
     try:
-        with open(file_path, newline='', encoding='utf-8') as csvfile:
-            reader = csv.DictReader(csvfile)
-            preguntas = []
-            for row in reader:
-                pregunta = {
-                    "pregunta": row['pregunta'],
-                    "opciones": [row['opcion1'], row['opcion2'], row['opcion3']],
-                    "respuesta_correcta": row['respuesta_correcta']
-                }
-                preguntas.append(pregunta)
-
-        try:
-            with open('data/preguntas.json', 'r+') as file:
-                try:
-                    data = json.load(file)
-                except json.JSONDecodeError:
-                    data = []
-                data.extend(preguntas)
-                file.seek(0)
-                json.dump(data, file, indent=4)
-        except FileNotFoundError:
-            with open('data/preguntas.json', 'w') as file:
-                json.dump(preguntas, file, indent=4)
-
-    except Exception as e:
-        print(f"Error al leer el archivo CSV: {e}")
-
+        lista_preguntas_nueva = parse_csv(file_path)
+        sumar_csv_a_csv(lista_preguntas_nueva,ruta_csv_original)
+        print("El archivo se ingreso correctamente")
+    except:
+        print("No se pudo ingresar el archivo")
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+

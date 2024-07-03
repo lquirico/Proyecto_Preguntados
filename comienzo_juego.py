@@ -153,7 +153,6 @@ def inicio_juego():
                 sonido.stop()
             elif evento.type == pygame.MOUSEMOTION:
                 x, y = evento.pos
-                print(f"{x},{y}")
             if evento.type == evento_tiempo:
                 segundero -= 1
             elif evento.type == pygame.MOUSEBUTTONDOWN:
