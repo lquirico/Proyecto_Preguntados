@@ -352,7 +352,7 @@ def press_space_button():
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-def actualizar_csv(lista_proyectos, nombre_archivo, manejo_archivo):
+def actualizar_csv(lista_proyectos, nombre_archivo):
     """Esta funcion vuelve a comvertir la lista a un archivo csv para ser guardado, con ,keys()
     guarda en la primera fila las keys y luego comienza a guardar los valores
 
