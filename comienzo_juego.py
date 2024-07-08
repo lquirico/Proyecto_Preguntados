@@ -215,7 +215,7 @@ def inicio_juego():
         if intentos == 0 or pregunta_actual >= len(lista_preguntas) :
             pregunta_actual = 0
             sonido.stop()  # Detener la música
-            nombre = pedir_nombre(pantalla, fuente_puntaje)
+            nombre = pedir_nombre(pantalla, fuente_puntaje,puntos)
             guardar_estadisticas("data\preguntas.csv",lista_preguntas)
             guardar_puntajes(nombre, puntos)
             mostrar_puntajes(pantalla, fuente_puntaje)

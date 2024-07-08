@@ -6,7 +6,7 @@ from tkinter import Tk, filedialog
 from config import *
 import time
 from constantes import *
-# Funciones relacionadas con pygame y UI
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
