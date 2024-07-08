@@ -1,31 +1,26 @@
 import os
 import pygame
 import sys
-import json
 import csv
 from tkinter import Tk, filedialog
 from config import *
 import time
 from constantes import *
-# Funciones relacionadas con pygame y UI
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 def dibujar_flecha_retroceso(pantalla):
     pygame.draw.polygon(pantalla, BLANCO, [(10, 20), (30, 10), (30, 30)])  # Dibujar una flecha simple
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 def clic_en_flecha_retroceso(pos):
     x, y = pos
     return 10 <= x <= 30 and 10 <= y <= 30
 
 
-
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 def mostrar_ajustes(pantalla):
     pantalla.fill(NEGRO)
@@ -67,9 +62,7 @@ def mostrar_ajustes(pantalla):
                     mostrar_menu_agregar_preguntas(pantalla, mostrar_ajustes)  # Mostrar menú de agregar preguntas
                     esperando_seleccion = False
 
-
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 def mostrar_volumen(pantalla):
     pantalla.fill(NEGRO)
@@ -139,10 +132,7 @@ def mostrar_volumen(pantalla):
 volumen_activo = True
 volumen_nivel = 100  # Nivel de volumen inicial (puede ser de 0 a 100)
 
-
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
 def blit_text(surface, text, pos, font, color=pygame.Color('black')):
     words = [word.split(' ') for word in text.splitlines()]
@@ -160,7 +150,6 @@ def blit_text(surface, text, pos, font, color=pygame.Color('black')):
             x += word_width + space
         x = pos[0]
         y += word_height
-
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -217,8 +206,6 @@ def guardar_estadisticas(nombre_archivo, lista_preguntas):
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
 def mostrar_menu_agregar_preguntas(pantalla, anterior):
     pantalla.fill(NEGRO)
 
@@ -259,11 +246,7 @@ def mostrar_menu_agregar_preguntas(pantalla, anterior):
                     agregar_preguntas_csv("data\preguntas.csv")
                     esperando_seleccion = False
 
-
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 def agregar_pregunta_individual():
     """Esta funcion solicita una pregunta individual para ingresar al juego
     """
@@ -351,8 +334,7 @@ def press_space_button():
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-def actualizar_csv(lista_proyectos, nombre_archivo, manejo_archivo):
+def actualizar_csv(lista_proyectos, nombre_archivo):
     """Esta funcion vuelve a comvertir la lista a un archivo csv para ser guardado, con ,keys()
     guarda en la primera fila las keys y luego comienza a guardar los valores
 
@@ -433,6 +415,8 @@ def parse_csv(nombre_archivo: str):
     else:
         print("ARCHIVO NO ENCONTRADO")
         return []
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def agregar_preguntas_csv(ruta_csv_original):
     """Esta funcion agrega preguntas en grupo, ingresando un archivo csv

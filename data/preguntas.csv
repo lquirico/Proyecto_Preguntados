@@ -1,18 +1,16 @@
 pregunta,respuesta_a,respuesta_b,respuesta_c,respuesta_correcta,porcentaje_aciertos,cantidad_fallos,cantidad_aciertos,cantidad_veces_preguntada
-¿En qué ciudad se celebra anualmente el Festival Nacional de la Vendimia?,Salta,Mendoza,San Juan,b,80.0,1,4,5
-¿Cuál es el deporte más popular en Argentina?,Rugby,Fútbol,Básquet,b,70.0,3,7,10
-Quien gano la copa America 2021?,Peru,Argentina,EE.UU,b,57.14285714285714,3,4,7
-¿Qué famoso autor argentino escribió 'El Aleph'?,Julio Cortázar,Jorge Luis Borges,Adolfo Bioy Casares,b,61.53846153846154,5,8,13
-"¿Quién es considerado el ""Padre de la Patria"" en Argentina?",José de San Martín,Manuel Belgrano,Bartolomé Mitre,a,66.66666666666666,2,4,6
-"¿Qué famosa cantante argentina es conocida como ""La Voz del Tango""?",Mercedes Sosa,Virginia Luque,Libertad Lamarque,c,57.14285714285714,3,4,7
-¿En qué provincia se encuentra la ciudad de Mar del Plata?,Buenos Aires,Córdoba,Santa Fe,a,100.0,0,3,3
-¿En qué año se declaró la independencia de Argentina?,1810,1816,1820,b,100.0,0,4,4
-¿En qué ciudad se encuentra el Obelisco?,Mendoza,Córdoba,Buenos Aires,c,100.0,0,4,4
+¿Quién fue el primer presidente de Argentina?,Bernardino Rivadavia,Domingo Sarmiento,Julio A. Roca,a,100.0,0,7,7
+"¿Qué famosa cantante argentina es conocida como ""La Voz del Tango""?",Mercedes Sosa,Virginia Luque,Libertad Lamarque,c,30.76923076923077,9,4,13
+¿En qué provincia se encuentra la ciudad de Mar del Plata?,Buenos Aires,Córdoba,Santa Fe,a,100.0,0,4,4
+¿En qué ciudad se celebra anualmente el Festival Nacional de la Vendimia?,Salta,Mendoza,San Juan,b,100.0,0,4,4
+"¿Quién es considerado el ""Padre de la Patria"" en Argentina?",José de San Martín,Manuel Belgrano,Bartolomé Mitre,a,100.0,0,6,6
+¿En qué año se declaró la independencia de Argentina?,1810,1816,1820,b,100.0,0,6,6
 ¿Cuál es la montaña más alta de Argentina?,Fitz Roy,Aconcagua,Cerro Torre,b,100.0,0,4,4
-¿Cuál es la capital de Argentina?,Córdoba,Rosario,Buenos Aires,c,83.33333333333334,1,5,6
-¿Quién escribió el poema épico 'Martín Fierro'?,José Hernández,Esteban Echeverría,Ricardo Güiraldes,a,66.66666666666666,1,2,3
-¿Quién fue el primer presidente de Argentina?,Bernardino Rivadavia,Domingo Sarmiento,Julio A. Roca,a,100.0,0,4,4
-¿En qué año murió Eva Perón?,1947,1952,1960,b,100.0,0,4,4
-Quien gano el mundial 2022?,Mexico,Argentina,Francia,b,80.0,1,4,5
+¿En qué año murió Eva Perón?,1947,1952,1960,b,100.0,0,5,5
 ¿Qué músico argentino fue el líder de la banda Soda Stereo?,Charly García,Fito Páez,Gustavo Cerati,c,100.0,0,5,5
-¿Qué bebida tradicional argentina se toma en una calabaza con una bombilla?,Café,Té,Mate,c,66.66666666666666,1,2,3
+¿Cuál es el deporte más popular en Argentina?,Rugby,Fútbol,Básquet,b,80.0,1,4,5
+¿Cuál es la capital de Argentina?,Córdoba,Rosario,Buenos Aires,c,100.0,0,5,5
+¿Qué famoso autor argentino escribió 'El Aleph'?,Julio Cortázar,Jorge Luis Borges,Adolfo Bioy Casares,b,44.44444444444444,5,4,9
+¿En qué ciudad se encuentra el Obelisco?,Mendoza,Córdoba,Buenos Aires,c,100.0,0,4,4
+¿Qué bebida tradicional argentina se toma en una calabaza con una bombilla?,Café,Té,Mate,c,100.0,0,4,4
+¿Quién escribió el poema épico 'Martín Fierro'?,José Hernández,Esteban Echeverría,Ricardo Güiraldes,a,80.0,1,4,5

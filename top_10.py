@@ -37,7 +37,7 @@ def guardar_puntajes(nombre, puntos):
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-def pedir_nombre(pantalla, fuente):
+def pedir_nombre(pantalla, fuente, puntaje):
     """Esta funcion solicita el nombre del jugador en pantalla para ser ingresado por teclado y con enter ser enviado
     retornando el nombre del jugador
 
@@ -66,7 +66,7 @@ def pedir_nombre(pantalla, fuente):
                     nombre += evento.unicode
 
         pantalla.fill(NEGRO)
-        texto = fuente.render("Ingrese su nombre: " + nombre, True, BLANCO)
+        texto = fuente.render(f"Su puntaje fue: {puntaje}. Ingrese su nombre: {nombre}" , True, BLANCO)
         pantalla.blit(imagen_game_over,(80,70))
         pantalla.blit(texto, (100, 500))
         pygame.display.flip()
