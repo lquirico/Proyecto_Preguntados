@@ -107,6 +107,10 @@ def inicio_juego():
 
     sonido = pygame.mixer.Sound("sound/tic_tac.mp3")
 
+    sonido_celebracion = pygame.mixer.Sound("sound\Sonido de Gritos y Aplausos (celebración).mp3")
+
+    sonido_perdiste = pygame.mixer.Sound("sound\efecto de sonido de perdio.mp3")
+
     imagen_opcion_a = pygame.image.load("image/opcionA.jpeg")
     imagen_opcion_a_transformada = pygame.transform.scale(imagen_opcion_a, (300, 100))
     imagen_opcion_b = pygame.image.load("image/opcionB.jpeg")
@@ -211,10 +215,21 @@ def inicio_juego():
         pantalla.blit(texto_segundero, (35, 340))
         pantalla.blit(texto_puntos, (430, 880))
         pantalla.blit(texto_intentos, (430, 910))
-        
-        if intentos == 0 or pregunta_actual >= len(lista_preguntas) :
+
+        if intentos > 0 and pregunta_actual >= len(lista_preguntas):
             pregunta_actual = 0
             sonido.stop()  # Detener la música
+            sonido_celebracion.play()
+            nombre = pedir_nombre(pantalla, fuente_puntaje,puntos)
+            guardar_estadisticas("data\preguntas.csv",lista_preguntas)
+            guardar_puntajes(nombre, puntos)
+            mostrar_puntajes(pantalla, fuente_puntaje)
+            flag_run = False
+        
+        elif intentos == 0:
+            pregunta_actual = 0
+            sonido.stop()  # Detener la música
+            sonido_perdiste.play()
             nombre = pedir_nombre(pantalla, fuente_puntaje,puntos)
             guardar_estadisticas("data\preguntas.csv",lista_preguntas)
             guardar_puntajes(nombre, puntos)

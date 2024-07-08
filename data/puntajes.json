@@ -25,8 +25,28 @@
         "fecha": "08-07-2024"
     },
     {
-        "nombre": "diego",
-        "puntos": 0,
+        "nombre": "alejandro",
+        "puntos": 650,
+        "fecha": "08-07-2024"
+    },
+    {
+        "nombre": "juani",
+        "puntos": 650,
+        "fecha": "08-07-2024"
+    },
+    {
+        "nombre": "poli",
+        "puntos": 600,
+        "fecha": "08-07-2024"
+    },
+    {
+        "nombre": "ricardo",
+        "puntos": 100,
+        "fecha": "08-07-2024"
+    },
+    {
+        "nombre": "luis",
+        "puntos": 100,
         "fecha": "08-07-2024"
     }
 ]
