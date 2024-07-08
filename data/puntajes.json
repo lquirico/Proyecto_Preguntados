@@ -10,43 +10,43 @@
         "fecha": "02-07-2024"
     },
     {
+        "nombre": "Diego",
+        "puntos": 750,
+        "fecha": "03-07-2024"
+    },
+    {
         "nombre": "rodri",
         "puntos": 700,
         "fecha": "02-07-2024"
     },
     {
-        "nombre": "poli",
+        "nombre": "Diego",
         "puntos": 700,
-        "fecha": "02-07-2024"
+        "fecha": "08-07-2024"
     },
     {
-        "nombre": "Gabriel",
-        "puntos": 450,
-        "fecha": "02-07-2024"
+        "nombre": "alejandro",
+        "puntos": 650,
+        "fecha": "08-07-2024"
     },
     {
-        "nombre": "fernando",
-        "puntos": 250,
-        "fecha": "03-07-2024"
+        "nombre": "juani",
+        "puntos": 650,
+        "fecha": "08-07-2024"
     },
     {
-        "nombre": "MATI",
-        "puntos": 200,
-        "fecha": "01-07-2024"
+        "nombre": "poli",
+        "puntos": 600,
+        "fecha": "08-07-2024"
     },
     {
-        "nombre": "Ricardo",
+        "nombre": "ricardo",
         "puntos": 100,
-        "fecha": "02-07-2024"
+        "fecha": "08-07-2024"
     },
     {
-        "nombre": "ko",
+        "nombre": "luis",
         "puntos": 100,
-        "fecha": "02-07-2024"
-    },
-    {
-        "nombre": "luis tuli",
-        "puntos": 50,
-        "fecha": "02-07-2024"
+        "fecha": "08-07-2024"
     }
 ]
